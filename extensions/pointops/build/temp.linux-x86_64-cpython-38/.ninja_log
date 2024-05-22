@@ -1,0 +1,6 @@
+# ninja log v5
+0	4265	1716017785563744061	/home/sgh/WorkSpace/Partial2Complete/extensions/pointops/build/temp.linux-x86_64-cpython-38/src/knnquery/knnquery_cuda.o	fa6a1196e3863d15
+1	4270	1716017785563744061	/home/sgh/WorkSpace/Partial2Complete/extensions/pointops/build/temp.linux-x86_64-cpython-38/src/sampling/sampling_cuda.o	9a7b8cf0187b653c
+1	10600	1716017791899831900	/home/sgh/WorkSpace/Partial2Complete/extensions/pointops/build/temp.linux-x86_64-cpython-38/src/sampling/sampling_cuda_kernel.o	a819c657a74ba148
+1	10661	1716017791955832678	/home/sgh/WorkSpace/Partial2Complete/extensions/pointops/build/temp.linux-x86_64-cpython-38/src/knnquery/knnquery_cuda_kernel.o	e19b5606a495699b
+1	11299	1716017792591841494	/home/sgh/WorkSpace/Partial2Complete/extensions/pointops/build/temp.linux-x86_64-cpython-38/src/pointops_api.o	f447023008f0f8b1

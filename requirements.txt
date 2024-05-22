@@ -1,0 +1,15 @@
+argparse
+easydict
+h5py
+matplotlib
+numpy
+
+opencv-python
+pyyaml
+scipy
+tensorboardX
+timm==0.4.5
+tqdm
+transforms3d
+pytorch3d
+open3d==0.14.1 -i https://pypi.doubanio.com/simple
