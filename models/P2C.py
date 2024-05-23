@@ -9,7 +9,7 @@ from extensions.pointops.functions import pointops
 from pytorch3d.ops.points_normals import estimate_pointcloud_normals
 from timm.models.layers import trunc_normal_
 from utils.logger import *
-from models.PCN_Loss import *
+from models.PCN_cuda import *
 
 class Encoder(nn.Module):
     def __init__(self, feat_dim):
@@ -97,13 +97,18 @@ class RopeSmoothLoss(nn.Module):
     def forward(self,points):
         batch_size = points.shape[0]
         loss = 0
-        points = points.cpu().detach().numpy()
+        _,group_means=get_normal(points,num_points=self._group_nums,group_size=self._group_size)
+        point_normals = compute_normal(group_means)
         for i in range(batch_size):
-            _,group_means=get_normal(points[i],num_points=self._group_nums,group_size=self._group_size)
-            point_normals = compute_normal(group_means)
-            single_loss,_=get_connections_loss(point_normals,m=self._m)
+            single_loss,_=get_connections_loss(point_normals[i],m=self._m)
             loss += single_loss
-        points = torch.from_numpy(points).cuda()
+        # points = points.cpu().detach().numpy()
+        # for i in range(batch_size):
+        #     _,group_means=get_normal(points[i],num_points=self._group_nums,group_size=self._group_size)
+        #     point_normals = compute_normal(group_means)
+        #     single_loss,_=get_connections_loss(point_normals,m=self._m)
+        #     loss += single_loss
+        # points = torch.from_numpy(points).cuda()
         return loss / batch_size
     
 @MODELS.register_module()

@@ -51,7 +51,7 @@ model : {
   support: 16,
   neighborhood_size: 32,
   manifold_weight: 0.01,
-  rope_smooth_weight : 0.01
+  rope_smooth_weight : 0.005
   }
 
 

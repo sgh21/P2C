@@ -10,26 +10,28 @@ def knn(x, src, k, transpose=False):
         src = src.transpose(1, 2).contiguous()
     b, n, _ = x.shape
     m = src.shape[1]
-    x = x.view(-1, 3)
-    src = src.view(-1, 3)
+    x = x.reshape(-1, 3)
+    src = src.reshape(-1, 3)
     x_offset = torch.full((b,), n, dtype=torch.long, device=x.device)
     src_offset = torch.full((b,), m, dtype=torch.long, device=x.device)
     x_offset = torch.cumsum(x_offset, dim=0).int()
     src_offset = torch.cumsum(src_offset, dim=0).int()
     idx, dists = knnquery(k, src, x, src_offset, x_offset)
-    idx = idx.view(b, n, k) - (src_offset - m)[:, None, None]
-    return idx.long(), dists.view(b, n, k)
+    k= (int)(k)
+    # print(idx.device)
+    idx = idx.reshape(b, n, k) - (src_offset - m)[:, None, None]
+    return idx.long(), dists.reshape(b, n, k)
 
 
 def fps(x, k):
     b, n, _ = x.shape
-    x = x.view(-1, 3)
+    x = x.reshape(-1, 3)
     offset = torch.full((b,), n, dtype=torch.long, device=x.device)
     new_offset = torch.full((b,), k, dtype=torch.long, device=x.device)
     offset = torch.cumsum(offset, dim=0).int()
     new_offset = torch.cumsum(new_offset, dim=0).int()
     idx = furthestsampling(x, offset, new_offset).long()
-    return x[idx].view(b, k, 3)
+    return x[idx].reshape(b, k, 3)
 
 
 def index_points(points, idx):
@@ -76,6 +78,7 @@ class KNNQuery(Function):
         if new_xyz is None: new_xyz = xyz
         assert xyz.is_contiguous() and new_xyz.is_contiguous()
         m = new_xyz.shape[0]
+        nsample = (int)(nsample)
         idx = torch.cuda.IntTensor(m, nsample).zero_()
         dist2 = torch.cuda.FloatTensor(m, nsample).zero_()
         pointops_cuda.knnquery_cuda(m, nsample, xyz, new_xyz, offset, new_offset, idx, dist2)
